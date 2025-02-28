@@ -2,31 +2,113 @@
 <html lang="en">
   <head>
     <%- include("./partials/header") %>
-
     <title>Blogify</title>
+
+    <style>
+      /* Container for responsive grid layout with fixed 4 columns */
+      .blog-container {
+        display: grid;
+        grid-template-columns: repeat(
+          4,
+          1fr
+        ); /* ✅ Ensures exactly 4 columns */
+        gap: 1.5rem;
+        padding: 2rem;
+      }
+
+      /* Uniform card styling */
+      .blog-card {
+        width: 100%;
+        min-height: 450px; /* ✅ Ensures equal height */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      }
+
+      .blog-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Improved image display */
+      .card-img-top {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9; /* ✅ Makes image responsive with good aspect ratio */
+        object-fit: cover;
+      }
+
+      /* Ensuring consistent card height */
+      .card-body {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .card-footer {
+        margin-top: auto;
+        padding: 10px;
+        text-align: center;
+      }
+
+      /* Responsive layout for smaller screens */
+      @media (max-width: 1200px) {
+        .blog-container {
+          grid-template-columns: repeat(
+            3,
+            1fr
+          ); /* 3 columns for medium screens */
+        }
+      }
+
+      @media (max-width: 900px) {
+        .blog-container {
+          grid-template-columns: repeat(
+            2,
+            1fr
+          ); /* 2 columns for small screens */
+        }
+      }
+
+      @media (max-width: 600px) {
+        .blog-container {
+          grid-template-columns: 1fr; /* 1 column for mobile screens */
+        }
+      }
+    </style>
   </head>
   <body>
     <%- include("./partials/navbar") %>
 
-    <div class="container mt-4 row row-cols-4">
-      <% blogs.forEach(blog => { %>
-      <div class="blog">
-        <div class="card" style="width: 18rem">
-          <img
-            src="<%= blog.coverImageUrl %>"
-            class="card-img-top img-thumbnail"
-            alt="..."
-          />
-          <div class="card-body">
-            <h5 class="card-title"><%= blog.title %></h5>
-
-            <a href="/blog/<%= blog._id %>" class="btn btn-primary">
-              Read more...
-            </a>
+    <div class="container mt-4">
+      <h2 class="text-center mb-4 font-bold text-2xl">Latest Blogs</h2>
+      <div class="blog-container">
+        <% blogs.forEach(blog => { %>
+        <div class="blog">
+          <div class="card shadow-lg">
+            <img
+              src="<%= blog.coverImageUrl %>"
+              class="card-img-top"
+              alt="Blog Image"
+            />
+            <div class="card-body">
+              <h5 class="card-title font-bold text-lg"><%= blog.title %></h5>
+              <p class="text-gray-600 text-sm mb-2">
+                <%= blog.body.substring(0, 100) %>...
+              </p>
+              <a href="/blog/<%= blog._id %>" class="btn btn-primary w-full">
+                Read more...
+              </a>
+            </div>
           </div>
         </div>
+        <% }) %>
       </div>
-      <% }) %>
     </div>
 
     <%- include("./partials/scripts") %>

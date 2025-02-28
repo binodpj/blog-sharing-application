@@ -43,12 +43,22 @@ router.get("/:id", async (req, res) => {
   const comments = await Comment.find({ blogId: req.params.id }).populate(
     "createdBy"
   );
-  console.log(blog);
+  // console.log(blog);
   return res.render("blogPage", {
     user: req.user,
     blog,
     comments,
   });
+});
+
+router.post("/:blogId/delete", async (req, res) => {
+  const blog = await Blog.findOneAndDelete(req.params.blogId);
+  return res.status(200).redirect("/");
+});
+
+router.post("/:blogId/update", async (req, res) => {
+  const blog = await Blog.findOneAndUpdate(req.params.blogId);
+  return res.status(200).redirect("/");
 });
 
 router.post("/:blogId/comment", async (req, res) => {

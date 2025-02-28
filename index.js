@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
@@ -10,13 +12,16 @@ const blogRoute = require("./routes/blog");
 const checkForAuthenticationCookie = require("./middlewares/authentication");
 
 const app = express();
-const PORT = 8000;
+const PORT = process.env.PORT || 3000;
 
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/blogify")
+  .connect(process.env.MONGODB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(`Error: ${err}`));
 
@@ -27,6 +32,7 @@ app.use(express.static(path.resolve("./public")));
 
 app.get("/", async (req, res) => {
   const allBlogs = await Blog.find({});
+  // console.log(req.user);
   res.render("home", {
     user: req.user,
     blogs: allBlogs,
