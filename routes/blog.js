@@ -43,7 +43,7 @@ router.get("/:id", async (req, res) => {
   const comments = await Comment.find({ blogId: req.params.id }).populate(
     "createdBy"
   );
-  // console.log(blog);
+  console.log(blog);
   return res.render("blogPage", {
     user: req.user,
     blog,

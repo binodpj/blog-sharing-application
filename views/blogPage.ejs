@@ -192,7 +192,7 @@
         <img src="<%= blog.createdBy.profileImageUrl %>" width="50px" alt="" />
         <p><%= blog.createdBy.fullName %></p>
       </div>
-      <% if (blog.createdBy._id.toString() === user._id) { %>
+      <% if (user && blog.createdBy._id.toString() === user._id) { %>
       <form action="/blog/<%= blog._id %>/delete" method="post">
         <button type="submit" class="delete-button">Delete</button>
       </form>
